@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "eslint": "^8.33.0",
+    "prettier": "^2.8.3"
+  },
+  "name": "todo-list",
+  "description": "",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Howl404/Todo-List.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Howl404/Todo-List/issues"
+  },
+  "homepage": "https://github.com/Howl404/Todo-List#readme"
+}
