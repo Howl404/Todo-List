@@ -1,3 +1,145 @@
 body {
-  background-color: black;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  background-color: rgb(231, 227, 227);
+  padding: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+header h1 {
+  margin-left: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.sidebar {
+  background-color: rgba(128, 128, 128, 0.849);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 1rem;
+}
+
+.sidebar h2 {
+  margin-top: 2rem;
+}
+
+.sidebar button {
+  border: 1px solid black;
+  width: 200px;
+  height: 50px;
+  font-size: 1.2rem;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.content {
+  background-color: rgba(128, 128, 128, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.main-content * {
+  height: 50px;
+  width: 400px;
+}
+
+.main-content button {
+  text-align: left;
+}
+
+.main-content input {
+  border: 1px solid black;
+  border-radius: 12px;
+  padding-left: 1rem;
+}
+
+.button-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.button-container button {
+  height: 50px;
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.apply {
+  background-color: green;
+}
+
+.cancel {
+  background-color: red;
+}
+
+.todo-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-div * {
+  height: auto;
+  width: auto;
+}
+
+.priority {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.priority p:first-child {
+  grid-row: span 2;
+}
+
+/* Footer */
+
+footer {
+  padding: 0.5rem;
+  background-color: rgb(231, 227, 227);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer img {
+  height: 50px;
+  margin-right: 1rem;
+}
+
+footer a {
+  text-decoration: none;
+  color: black;
+  border-bottom: 2px solid rgb(231, 227, 227);
+}
+
+footer a:hover {
+  border-bottom: 2px solid black;
 }
