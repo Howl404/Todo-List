@@ -3,8 +3,13 @@ import "./style.css";
 import { createEverything } from "./everything.js";
 import { createToday } from "./today.js";
 import { createWeek } from "./week.js";
-import { addTask, Todos, updateEverything, updateToday } from "./addTask.js";
-import { compareAsc, format } from "date-fns";
+import {
+  addTask,
+  updateEverything,
+  updateToday,
+  updateWeek,
+  list,
+} from "./addTask.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   createEverything();
@@ -27,11 +32,10 @@ document.querySelector(".today").addEventListener("click", function () {
 document.querySelector(".week").addEventListener("click", function () {
   cleanDisplay();
   createWeek();
+  updateWeek();
 });
 
 const cleanDisplay = function () {
   const content = document.querySelector(".main-content");
   content.remove();
 };
-
-console.log((s = new Date()));

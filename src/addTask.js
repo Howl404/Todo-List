@@ -1,7 +1,21 @@
-export { addTask, updateToday };
+export { addTask, updateToday, updateWeek };
 export { Todos };
 export { updateEverything };
-import { compareAsc, format } from "date-fns";
+import { format } from "date-fns";
+
+let defaultName = 1;
+let Todos = [];
+let currentProject = "Todos";
+let todayDate = format(new Date(), "yyyy-MM-dd");
+
+class Todo {
+  constructor(title, description, dueDate, priority) {
+    this.title = title;
+    this.description = description;
+    this.dueDate = dueDate;
+    this.priority = priority;
+  }
+}
 
 const addTask = function () {
   document.querySelector(".add-task").addEventListener("click", function () {
@@ -33,7 +47,7 @@ const addTask = function () {
     applyButton.addEventListener("click", function () {
       console.log(input.value);
       if (input.value === "") {
-        const obj = new Todo(defaultName, "", "", defaultName);
+        const obj = new Todo(defaultName.toString(), "", "", defaultName);
         defaultName++;
         Todos.push(obj);
         console.log(Todos);
@@ -41,7 +55,7 @@ const addTask = function () {
         document.querySelector(".input").remove();
         document.querySelector(".button-container").remove();
       } else {
-        const obj = new Todo(input.value, "", "", defaultName);
+        const obj = new Todo(input.value.toString(), "", "", defaultName);
         defaultName++;
         Todos.push(obj);
         console.log(Todos);
@@ -58,31 +72,22 @@ const addTask = function () {
       document.querySelector(".button-container").remove();
       updateEverything();
     });
-
-    class Todo {
-      constructor(title, description, dueDate, priority) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority;
-      }
-    }
   });
 };
-
-let defaultName = 1;
-let Todos = [];
-let todayDate = new Date();
 
 const updateToday = function () {
   const today = Todos.filter(function (el) {
     return el.dueDate === todayDate;
   });
 
+  document.querySelectorAll(".todo-div").forEach(function (element) {
+    element.remove();
+  });
+
   for (let i = 0; i < today.length; i++) {
     const div = document.createElement("div");
 
-    const name = document.createElement("p");
+    const name = document.createElement("button");
     const date = document.createElement("input");
 
     date.type = "date";
@@ -97,9 +102,146 @@ const updateToday = function () {
     const list = document.querySelector(".main-content");
     const addTask = document.querySelector(".add-task");
 
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button");
+    deleteButton.innerHTML = "Delete";
+
     list.insertBefore(div, addTask);
+    div.appendChild(deleteButton);
     div.appendChild(name);
     div.appendChild(date);
+
+    deleteButton.addEventListener("click", function () {
+      const find = Todos.findIndex((item) => {
+        return item.title == name.innerHTML;
+      });
+
+      Todos.splice(find, 1);
+
+      updateToday();
+    });
+
+    date.addEventListener("input", function (e) {
+      Todos[i].dueDate = e.target.value;
+      console.log(e.target.value);
+      updateToday();
+    });
+
+    name.addEventListener("click", function (e) {
+      name.style.display = "none";
+
+      const inputName = document.createElement("input");
+      inputName.value = Todos[i].title;
+
+      inputName.classList.add("input-name");
+      div.insertBefore(inputName, date);
+
+      inputName.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          if (Todos.map((item) => item.title).indexOf(inputName.value) !== -1) {
+            alert("Task with same title already exists");
+            updateToday();
+          } else {
+            e.preventDefault();
+            Todos[i].title = inputName.value;
+            updateToday();
+          }
+        }
+      });
+    });
+  }
+};
+
+const updateWeek = function () {
+  let week = [];
+
+  const checkWeek = function (t, d) {
+    const day = Number(t.slice(-2));
+    const due = Number(d.slice(-2));
+    if (due >= day && due < day + 7) {
+      return true;
+    } else return false;
+  };
+
+  for (let i = 0; i < Todos.length; i++) {
+    if (checkWeek(todayDate, Todos[i].dueDate) === true) {
+      week.push(Todos[i]);
+    }
+  }
+
+  document.querySelectorAll(".todo-div").forEach(function (element) {
+    element.remove();
+  });
+
+  for (let i = 0; i < week.length; i++) {
+    const div = document.createElement("div");
+
+    const name = document.createElement("button");
+    const date = document.createElement("input");
+
+    date.type = "date";
+
+    name.classList.add("name");
+    date.classList.add("date");
+    div.classList.add("todo-div");
+
+    name.innerHTML = week[i].title;
+    date.value = week[i].dueDate;
+
+    const list = document.querySelector(".main-content");
+    const addTask = document.querySelector(".add-task");
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button");
+    deleteButton.innerHTML = "Delete";
+
+    list.insertBefore(div, addTask);
+    div.appendChild(deleteButton);
+    div.appendChild(name);
+    div.appendChild(date);
+
+    deleteButton.addEventListener("click", function () {
+      const find = Todos.findIndex((item) => {
+        return item.title == name.innerHTML;
+      });
+
+      Todos.splice(find, 1);
+
+      updateWeek();
+    });
+
+    date.addEventListener("input", function (e) {
+      Todos[i].dueDate = e.target.value;
+      console.log(e.target.value);
+      updateWeek();
+    });
+
+    name.addEventListener("click", function (e) {
+      const index = Todos.map((item) => item.title).indexOf(
+        Number(e.target.innerHTML)
+      );
+
+      name.style.display = "none";
+
+      const inputName = document.createElement("input");
+      inputName.value = Todos[i].title;
+
+      inputName.classList.add("input-name");
+      div.insertBefore(inputName, date);
+
+      inputName.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          if (Todos.map((item) => item.title).indexOf(inputName.value) !== -1) {
+            alert("Task with same title already exists");
+            updateWeek();
+          } else {
+            e.preventDefault();
+            Todos[i].title = inputName.value;
+            updateWeek();
+          }
+        }
+      });
+    });
   }
 };
 
@@ -114,7 +256,7 @@ const updateEverything = function () {
   for (let i = 0; i < Todos.length; i++) {
     const div = document.createElement("div");
 
-    const name = document.createElement("p");
+    const name = document.createElement("button");
     const priority = document.createElement("div");
     const date = document.createElement("input");
 
@@ -138,10 +280,25 @@ const updateEverything = function () {
     const list = document.querySelector(".main-content");
     const addTask = document.querySelector(".add-task");
 
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button");
+    deleteButton.innerHTML = "Delete";
+
     list.insertBefore(div, addTask);
+    div.appendChild(deleteButton);
     div.appendChild(name);
     div.appendChild(priority);
     div.appendChild(date);
+
+    deleteButton.addEventListener("click", function () {
+      const find = Todos.findIndex((item) => {
+        return item.title == name.innerHTML;
+      });
+
+      Todos.splice(find, 1);
+
+      updateEverything();
+    });
 
     priority.appendChild(priorityText);
     priority.appendChild(priorityUp);
@@ -149,19 +306,44 @@ const updateEverything = function () {
 
     priorityDown.addEventListener("click", function () {
       Todos[i].priority++;
-      Todos[i].dueDate++;
       updateEverything();
     });
 
     priorityUp.addEventListener("click", function () {
       Todos[i].priority--;
-      Todos[i].dueDate--;
       updateEverything();
     });
 
     date.addEventListener("input", function (e) {
       Todos[i].dueDate = e.target.value;
       console.log(e.target.value);
+    });
+
+    name.addEventListener("click", function (e) {
+      const index = Todos.map((item) => item.title).indexOf(
+        Number(e.target.innerHTML)
+      );
+
+      name.style.display = "none";
+
+      const inputName = document.createElement("input");
+      inputName.value = Todos[i].title;
+
+      inputName.classList.add("input-name");
+      div.insertBefore(inputName, priority);
+
+      inputName.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          if (Todos.map((item) => item.title).indexOf(inputName.value) !== -1) {
+            alert("Task with same title already exists");
+            updateEverything();
+          } else {
+            e.preventDefault();
+            Todos[i].title = inputName.value;
+            updateEverything();
+          }
+        }
+      });
     });
   }
 };
