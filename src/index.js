@@ -15,10 +15,12 @@ function createProject(projectName) {
 }
 
 const checkLocal = function () {
-  let data = window.localStorage.getItem("projects");
-  projects = JSON.parse(data);
-  let current = window.localStorage.getItem("currentProject");
-  currentProject = current;
+  if (window.localStorage.getItem("projects") !== null) {
+    let data = window.localStorage.getItem("projects");
+    projects = JSON.parse(data);
+    let current = window.localStorage.getItem("currentProject");
+    currentProject = current;
+  }
 };
 
 let projects = {};
