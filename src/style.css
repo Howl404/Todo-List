@@ -42,7 +42,7 @@ h2 {
   border: 1px solid black;
   width: 200px;
   height: 50px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   text-align: left;
   padding-left: 1rem;
 }
@@ -88,6 +88,40 @@ h2 {
   border-radius: 12px;
   text-align: center;
   font-size: 1.3rem;
+  z-index: 0;
+}
+
+.sidebar button button {
+  height: 30px;
+  width: 50px;
+  padding-left: 0;
+  z-index: 1;
+}
+
+.project {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.project .project {
+  height: 50px;
+  width: 125px;
+}
+
+.project .delete {
+  height: 50px;
+  width: 75px;
+}
+
+.project .default {
+  height: 50px;
+  width: 200px;
+}
+
+.selected {
+  background-color: black;
+  color: white;
 }
 
 .apply {

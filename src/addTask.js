@@ -1,11 +1,8 @@
 export { addTask, updateToday, updateWeek };
-export { Todos };
 export { updateEverything };
 import { format } from "date-fns";
 
 let defaultName = 1;
-let Todos = [];
-let currentProject = "Todos";
 let todayDate = format(new Date(), "yyyy-MM-dd");
 
 class Todo {
@@ -17,8 +14,8 @@ class Todo {
   }
 }
 
-const addTask = function () {
-  document.querySelector(".add-task").addEventListener("click", function () {
+const addTask = function (Todos) {
+  const add = function () {
     document.querySelector(".add-task").style.display = "none";
 
     const input = document.createElement("input");
@@ -45,9 +42,13 @@ const addTask = function () {
     buttonsDiv.appendChild(cancelButton);
 
     applyButton.addEventListener("click", function () {
-      console.log(input.value);
       if (input.value === "") {
-        const obj = new Todo(defaultName.toString(), "", "", defaultName);
+        const obj = new Todo(
+          defaultName.toString(),
+          "",
+          todayDate,
+          defaultName
+        );
         defaultName++;
         Todos.push(obj);
         console.log(Todos);
@@ -55,7 +56,12 @@ const addTask = function () {
         document.querySelector(".input").remove();
         document.querySelector(".button-container").remove();
       } else {
-        const obj = new Todo(input.value.toString(), "", "", defaultName);
+        const obj = new Todo(
+          input.value.toString(),
+          "",
+          todayDate,
+          defaultName
+        );
         defaultName++;
         Todos.push(obj);
         console.log(Todos);
@@ -63,19 +69,21 @@ const addTask = function () {
         document.querySelector(".input").remove();
         document.querySelector(".button-container").remove();
       }
-      updateEverything();
+      updateEverything(Todos);
     });
 
     cancelButton.addEventListener("click", function () {
       document.querySelector(".add-task").style.display = "block";
       document.querySelector(".input").remove();
       document.querySelector(".button-container").remove();
-      updateEverything();
+      updateEverything(Todos);
     });
-  });
+  };
+
+  document.querySelector(".add-task").addEventListener("click", add);
 };
 
-const updateToday = function () {
+const updateToday = function (Todos) {
   const today = Todos.filter(function (el) {
     return el.dueDate === todayDate;
   });
@@ -124,7 +132,7 @@ const updateToday = function () {
     date.addEventListener("input", function (e) {
       Todos[i].dueDate = e.target.value;
       console.log(e.target.value);
-      updateToday();
+      updateToday(Todos);
     });
 
     name.addEventListener("click", function (e) {
@@ -140,11 +148,11 @@ const updateToday = function () {
         if (e.key === "Enter") {
           if (Todos.map((item) => item.title).indexOf(inputName.value) !== -1) {
             alert("Task with same title already exists");
-            updateToday();
+            updateToday(Todos);
           } else {
             e.preventDefault();
             Todos[i].title = inputName.value;
-            updateToday();
+            updateToday(Todos);
           }
         }
       });
@@ -152,7 +160,7 @@ const updateToday = function () {
   }
 };
 
-const updateWeek = function () {
+const updateWeek = function (Todos) {
   let week = [];
 
   const checkWeek = function (t, d) {
@@ -207,13 +215,13 @@ const updateWeek = function () {
 
       Todos.splice(find, 1);
 
-      updateWeek();
+      updateWeek(Todos);
     });
 
     date.addEventListener("input", function (e) {
       Todos[i].dueDate = e.target.value;
       console.log(e.target.value);
-      updateWeek();
+      updateWeek(Todos);
     });
 
     name.addEventListener("click", function (e) {
@@ -233,11 +241,11 @@ const updateWeek = function () {
         if (e.key === "Enter") {
           if (Todos.map((item) => item.title).indexOf(inputName.value) !== -1) {
             alert("Task with same title already exists");
-            updateWeek();
+            updateWeek(Todos);
           } else {
             e.preventDefault();
             Todos[i].title = inputName.value;
-            updateWeek();
+            updateWeek(Todos);
           }
         }
       });
@@ -245,7 +253,7 @@ const updateWeek = function () {
   }
 };
 
-const updateEverything = function () {
+const updateEverything = function (Todos) {
   Todos = Todos.sort((a, b) => {
     return a.priority - b.priority;
   });
@@ -297,7 +305,7 @@ const updateEverything = function () {
 
       Todos.splice(find, 1);
 
-      updateEverything();
+      updateEverything(Todos);
     });
 
     priority.appendChild(priorityText);
@@ -306,12 +314,12 @@ const updateEverything = function () {
 
     priorityDown.addEventListener("click", function () {
       Todos[i].priority++;
-      updateEverything();
+      updateEverything(Todos);
     });
 
     priorityUp.addEventListener("click", function () {
       Todos[i].priority--;
-      updateEverything();
+      updateEverything(Todos);
     });
 
     date.addEventListener("input", function (e) {
@@ -336,11 +344,11 @@ const updateEverything = function () {
         if (e.key === "Enter") {
           if (Todos.map((item) => item.title).indexOf(inputName.value) !== -1) {
             alert("Task with same title already exists");
-            updateEverything();
+            updateEverything(Todos);
           } else {
             e.preventDefault();
             Todos[i].title = inputName.value;
-            updateEverything();
+            updateEverything(Todos);
           }
         }
       });
