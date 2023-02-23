@@ -105,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   checkLocal();
   createEverything();
+  console.log(projects);
+  console.log(currentProject);
   addTask(projects[currentProject]);
   updateEverything(projects[currentProject]);
   cleanProjects();
