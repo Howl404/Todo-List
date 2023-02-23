@@ -14,6 +14,9 @@ function createProject(projectName) {
   projects[projectName] = [];
 }
 
+let projects = {};
+let currentProject = "Default";
+
 const checkLocal = function () {
   if (window.localStorage.getItem("projects") !== null) {
     let data = window.localStorage.getItem("projects");
@@ -94,8 +97,6 @@ const cleanProjects = function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  let projects = {};
-  let currentProject = "Default";
   createProject("Default");
 
   checkLocal();
