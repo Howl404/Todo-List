@@ -23,10 +23,6 @@ const checkLocal = function () {
   }
 };
 
-let projects = {};
-let currentProject = "Default";
-createProject("Default");
-
 window.addEventListener("beforeunload", () => {
   window.localStorage.setItem("projects", JSON.stringify(projects));
   window.localStorage.setItem("currentProject", currentProject);
@@ -98,6 +94,10 @@ const cleanProjects = function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
+  let projects = {};
+  let currentProject = "Default";
+  createProject("Default");
+
   checkLocal();
   createEverything();
   addTask(projects[currentProject]);
