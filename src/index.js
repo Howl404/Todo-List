@@ -18,7 +18,8 @@ let projects = {};
 let currentProject = "Default";
 
 const checkLocal = function () {
-  if (window.localStorage.getItem("projects") !== null) {
+  if (window.localStorage.getItem("projects") == null) {
+  } else {
     let data = window.localStorage.getItem("projects");
     projects = JSON.parse(data);
     let current = window.localStorage.getItem("currentProject");
