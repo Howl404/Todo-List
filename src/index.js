@@ -83,12 +83,14 @@ const displayProjects = function () {
       deleteButton.addEventListener("click", () => {
         delete projects[key];
         currentProject = "Default";
+
         cleanDisplay();
         createEverything();
         addTask(projects[currentProject]);
         updateEverything(projects[currentProject]);
         cleanProjects();
         displayProjects();
+        document.querySelector(`.project-Default`).classList.add("selected");
       });
     }
   });
